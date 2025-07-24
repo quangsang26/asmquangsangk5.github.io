@@ -6,19 +6,19 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
+# Cấu hình giao diện
 st.set_page_config(page_title="Sales Forecast - ABC Manufacturing", layout="wide")
 st.title("📊 Sales Forecasting with Linear Regression")
 
-# 1. Upload file Excel
-uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
-if uploaded_file:
-    df = pd.read_excel(uploaded_file)
+# 1. Load CSV trực tiếp từ GitHub
+csv_url = "https://raw.githubusercontent.com/quangsang26/asmthayvu.github.io/refs/heads/main/abc_sales_data.csv"
+try:
+    df = pd.read_csv(csv_url)
     st.subheader("🔍 Data Preview")
     st.dataframe(df)
 
-    # 2. Exploratory Data Analysis
+    # 2. Phân tích dữ liệu (EDA)
     st.subheader("📈 Exploratory Data Analysis (EDA)")
-
     col1, col2 = st.columns(2)
 
     with col1:
@@ -48,10 +48,9 @@ if uploaded_file:
     sns.lineplot(x=df['Week'], y=df['Sales'], marker='o', ax=ax5)
     st.pyplot(fig5)
 
-    # 3. Train Linear Regression Model
+    # 3. Huấn luyện mô hình hồi quy tuyến tính
     st.subheader("🧠 Train Linear Regression Model")
-
-    features = ['Advertising', 'Price', 'Search Interest']
+    features = ['Advertising', 'Price', 'Online_Search']
     target = 'Sales'
 
     X = df[features]
@@ -63,21 +62,24 @@ if uploaded_file:
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
-
     r2 = r2_score(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
 
     st.write(f"**R² Score:** {r2:.2f}")
     st.write(f"**Mean Absolute Error (MAE):** {mae:.2f}")
 
-    # 4. Custom Prediction
+    # 4. Dự báo tùy chỉnh
     st.subheader("🔮 Predict Your Own Sales")
 
-    adv = st.number_input("Advertising Spend", value=100)
-    price = st.number_input("Product Price", value=20.0)
-    interest = st.number_input("Search Interest", value=60)
+    adv = st.number_input("Advertising Spend", value=3000)
+    price = st.number_input("Product Price", value=199.0)
+    interest = st.number_input("Online Search Interest", value=500)
 
     input_data = pd.DataFrame([[adv, price, interest]], columns=features)
     predicted_sales = model.predict(input_data)[0]
 
     st.success(f"📦 Predicted Sales: **{predicted_sales:.2f} units**")
+
+except Exception as e:
+    st.error("❌ Failed to load the dataset. Please check the CSV URL or network connection.")
+    st.code(str(e))
