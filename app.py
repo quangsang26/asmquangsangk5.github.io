@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 st.set_page_config(page_title="Sales Forecast - ABC Manufacturing", layout="wide")
 st.title("📊 Sales Forecasting with Linear Regression")
 
-# 1. Đọc dữ liệu CSV từ GitHub
+# ✅ Đường dẫn CSV từ GitHub (link chuẩn)
 csv_url = "https://raw.githubusercontent.com/quangsang26/asmthayvu.github.io/main/abc_sales_data.csv"
 
 try:
@@ -17,7 +17,7 @@ try:
     st.subheader("🔍 Data Preview")
     st.dataframe(df)
 
-    # 2. EDA
+    # 📈 Phân tích dữ liệu
     st.subheader("📈 Exploratory Data Analysis (EDA)")
     col1, col2 = st.columns(2)
 
@@ -48,7 +48,7 @@ try:
     sns.lineplot(x=df['Week'], y=df['Sales'], marker='o', ax=ax5)
     st.pyplot(fig5)
 
-    # 3. Huấn luyện mô hình
+    # 🧠 Huấn luyện mô hình Linear Regression
     st.subheader("🧠 Train Linear Regression Model")
     features = ['Advertising', 'Price', 'Search Interest']
     target = 'Sales'
@@ -68,7 +68,7 @@ try:
     st.write(f"**R² Score:** {r2:.2f}")
     st.write(f"**Mean Absolute Error (MAE):** {mae:.2f}")
 
-    # 4. Dự đoán tuỳ chỉnh
+    # 🔮 Dự đoán tùy chỉnh
     st.subheader("🔮 Predict Your Own Sales")
 
     adv = st.number_input("Advertising Spend", value=3000)
