@@ -51,7 +51,7 @@ st.pyplot(fig5)
 # 3. Train Linear Regression Model
 st.subheader("🧠 Train Linear Regression Model")
 
-features = ['Advertising', 'Price', 'Search Interest']
+features = ['Advertising', 'Price', 'OnlineSearchIndex']
 target = 'Sales'
 
 X = df[features]
